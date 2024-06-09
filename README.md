@@ -1,8 +1,10 @@
 # Spotify Analyser
 
+```markdown
 This project is a Django-based application for analyzing Spotify data.
 
 It includes configurations for both development and production environments using Docker.
+```
 
 ## Project Structure
 
@@ -21,6 +23,7 @@ myproject/
 │   ├── init-db.sh
 │   ├── .local.env
 │   ├── .env.prod
+│   ├── .pre-commit-config.yaml
 ├── docker-compose.yml
 ├── docker-compose.prod.yml
 └── README.md
@@ -30,6 +33,7 @@ myproject/
 
 - Docker
 - Docker Compose
+- Python (for setting up pre-commit hooks)
 
 ## Development Setup
 
@@ -38,6 +42,7 @@ myproject/
 - **Docker Compose**: `docker-compose.yml`
 - **Dockerfile**: `backend/Dockerfile.dev`
 - **Environment Variables**: `backend/.local.env`
+- **Pre-commit Hooks**: `backend/.pre-commit-config.yaml`
 
 ### Environment Variables
 
@@ -140,6 +145,36 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "postgres" <<-EOSQL
     GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;
 EOSQL
 ```
+
+### Pre-commit Hooks Setup
+
+1. **Install pre-commit**:
+
+    ```sh
+    pip install pre-commit
+    ```
+
+2. **Create `.pre-commit-config.yaml`** in the `root` directory:
+
+    ```yaml
+    repos:
+      - repo: https://github.com/charliermarsh/ruff-pre-commit
+        rev: v0.4.8
+        hooks:
+          - id: ruff
+    ```
+
+3. **Install the pre-commit hooks**:
+
+    ```sh
+    pre-commit install
+    ```
+
+4. **Run pre-commit manually (optional)**:
+
+    ```sh
+    pre-commit run --all-files
+    ```
 
 ### Running the Development Environment
 

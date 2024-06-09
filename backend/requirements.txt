@@ -6,6 +6,10 @@ Django==4.0.2
 # https://pypi.org/project/gunicorn/
 gunicorn==22.0.0
 
+## Pre-commit hooks
+# https://pypi.org/project/pre-commit/
+pre-commit==3.7.1
+
 ## Postgres Client
 # https://pypi.org/project/psycopg2/
 psycopg2-binary==2.9.9
@@ -13,3 +17,7 @@ psycopg2-binary==2.9.9
 ## Environment Variables
 # https://pypi.org/project/python-decouple/
 python-decouple==3.8
+
+## https://pypi.org/project/ruff/0.0.178/
+# Linter
+ruff==0.4.8
