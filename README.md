@@ -154,7 +154,7 @@ EOSQL
     pip install pre-commit
     ```
 
-2. **Create `.pre-commit-config.yaml`** in the `root` directory:
+2. **Create `.pre-commit-config.yaml`** in the `backend` directory:
 
     ```yaml
     repos:
