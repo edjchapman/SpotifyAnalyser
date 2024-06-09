@@ -1,0 +1,25 @@
+# backend/Dockerfile.dev
+
+# Start from a Python base image
+FROM python:3.12.4-slim-bullseye
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory in container
+WORKDIR /backend
+
+# Install dependencies
+COPY requirements.txt /backend/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . /backend/
+
+# Expose the port that the Django app runs on
+EXPOSE 8000
+
+# Run the Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

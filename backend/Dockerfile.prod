@@ -1,0 +1,26 @@
+# Start from a Python base image
+FROM python:3.12.4-slim-bullseye
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory in container
+WORKDIR /backend
+
+# Install dependencies
+COPY requirements.txt /backend/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . /backend/
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Expose the port that the Django app runs on
+EXPOSE 8000
+
+# Run the Gunicorn server
+CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]

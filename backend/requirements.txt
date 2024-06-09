@@ -1,0 +1,15 @@
+## Django Web Framework
+# https://pypi.org/project/Django/
+Django==4.0.2
+
+## WSGI HTTP Server
+# https://pypi.org/project/gunicorn/
+gunicorn==22.0.0
+
+## Postgres Client
+# https://pypi.org/project/psycopg2/
+psycopg2-binary==2.9.9
+
+## Environment Variables
+# https://pypi.org/project/python-decouple/
+python-decouple==3.8
