@@ -7,7 +7,7 @@ local_settings.py
 backend/db.sqlite3
 db.sqlite3-journal
 media/
-staticfiles/  # Uncomment this line if you use collectstatic
+static/  # Uncomment this line if you use collectstatic
 
 ### Python
 # Byte-compiled / optimized / DLL files

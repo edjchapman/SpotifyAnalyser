@@ -1,6 +1,6 @@
 ## Django Web Framework
 # https://pypi.org/project/Django/
-Django==4.0.2
+Django==5.0.6
 
 ## WSGI HTTP Server
 # https://pypi.org/project/gunicorn/
@@ -21,3 +21,7 @@ python-decouple==3.8
 ## https://pypi.org/project/ruff/0.0.178/
 # Linter
 ruff==0.4.8
+
+## https://spotipy.readthedocs.io/
+# Python library for the Spotify Web API
+spotipy==2.24.0
