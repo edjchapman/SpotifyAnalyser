@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="makemigrations" type="BashProRunConfiguration">
+    <target name="backend" />
+    <scriptContent>python backend/manage.py makemigrations</scriptContent>
+    <option name="scriptParameters" value="--verbosity 3" />
+    <option name="sourceType" value="snippet" />
+    <RunnerSettings bashdbVersion="Automatic" bashPathMapper="Automatic" RunnerId="pro.bashsupport.shDebugRunner" />
+    <method v="2" />
+  </configuration>
+</component>
