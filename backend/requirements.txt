@@ -21,3 +21,7 @@ python-decouple==3.8
 ## https://pypi.org/project/ruff/0.0.178/
 # Linter
 ruff==0.4.8
+
+## https://github.com/spotipy-dev/spotipy
+# Spotify Python Client
+spotipy==2.24.0
