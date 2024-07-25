@@ -8,6 +8,10 @@ from .forms import CustomUserCreationForm
 
 
 class RegisterView(CreateView):
+    """
+    User registration view
+    """
+
     form_class = CustomUserCreationForm
     template_name = "users/register.html"
     success_url = reverse_lazy("profile")
@@ -19,8 +23,12 @@ class RegisterView(CreateView):
 
 
 class LoginView(FormView):
+    """
+    User login view
+    """
+
     form_class = AuthenticationForm
-    template_name = "users/login.html"
+    template_name = "registration/login.html"
     success_url = reverse_lazy("profile")
 
     def form_valid(self, form):
@@ -33,4 +41,8 @@ class LoginView(FormView):
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
+    """
+    User profile view
+    """
+
     template_name = "users/profile.html"
