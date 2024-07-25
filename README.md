@@ -1,21 +1,32 @@
 # Spotify Analyser
 
-```markdown
 This project is a Django-based application for analyzing Spotify data.
 
 It includes configurations for both development and production environments using Docker.
-```
 
 ## Project Structure
 
 ```
-myproject/
+SpotifyAnalyser/
 ├── backend/
-│   ├── myproject/
+│   ├── core/
 │   │   ├── __init__.py
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   ├── wsgi.py
+│   ├── users/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── views.py
+│   ├── templates/
+│   │   ├── users/
+│   │   │   ├── register.html
+│   │   │   ├── login.html
+│   │   │   ├── profile.html
 │   ├── manage.py
 │   ├── requirements.txt
 │   ├── Dockerfile.dev
@@ -173,3 +184,26 @@ docker-compose -f docker-compose.prod.yml up -d
   ```sh
   docker-compose logs
   ```
+
+## User Management
+
+### Registration
+
+Users can register via the registration form:
+
+- URL: `/users/register/`
+- Template: `users/register.html`
+
+### Login
+
+Users can log in via the login form:
+
+- URL: `/users/login/`
+- Template: `users/login.html`
+
+### Profile
+
+Logged-in users can view their profile:
+
+- URL: `/users/profile/`
+- Template: `users/profile.html`
