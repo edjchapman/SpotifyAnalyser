@@ -1,3 +1,5 @@
+
+
 ### Django
 *.log
 *.pot
@@ -7,7 +9,8 @@ local_settings.py
 backend/db.sqlite3
 db.sqlite3-journal
 media/
-static/  # Uncomment this line if you use collectstatic
+staticfiles/
+!backend/staticfiles/.gitkeep
 
 ### Python
 # Byte-compiled / optimized / DLL files
@@ -157,3 +160,4 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+!/.gitignore

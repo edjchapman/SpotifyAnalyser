@@ -4,6 +4,7 @@ x-backend-common: &backend-common
     dockerfile: Dockerfile.dev
   volumes:
     - ./backend:/backend
+    - staticfiles:/backend/staticfiles
   depends_on:
     - db
   env_file:
@@ -29,7 +30,8 @@ services:
   backend_cmd:
     <<: *backend-common
     command: sh -c "tail -f /dev/null"  # Keep the container running
-    ports: [ ]  # Remove port binding to avoid conflicts
+    ports: [ ]
 
 volumes:
   postgres_data:
+  staticfiles:
