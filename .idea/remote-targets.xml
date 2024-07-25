@@ -19,6 +19,22 @@
           <config />
         </ContributedStateBase>
       </target>
+      <target name="backend_cmd" type="docker-compose" uuid="590aab30-c57f-4216-a0fb-7cf9a02c34ad">
+        <config>
+          <option name="targetPlatform">
+            <TargetPlatform />
+          </option>
+          <option name="configurationFiles">
+            <list>
+              <option value="$PROJECT_DIR$/docker-compose.yml" />
+            </list>
+          </option>
+          <option name="serviceName" value="backend_cmd" />
+        </config>
+        <ContributedStateBase type="BashSupportLanguageRuntime">
+          <config />
+        </ContributedStateBase>
+      </target>
     </targets>
   </component>
 </project>

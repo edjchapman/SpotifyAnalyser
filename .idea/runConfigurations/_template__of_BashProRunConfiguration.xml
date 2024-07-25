@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="true" type="BashProRunConfiguration">
+    <target name="backend_cmd" />
     <scriptContent>python backend/manage.py</scriptContent>
     <option name="scriptParameters" value="--verbosity 3" />
     <option name="sourceType" value="snippet" />

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="makemigrations" type="BashProRunConfiguration">
-    <target name="backend" />
+    <target name="backend_cmd" />
     <scriptContent>python backend/manage.py makemigrations</scriptContent>
     <option name="scriptParameters" value="--verbosity 3" />
     <option name="sourceType" value="snippet" />

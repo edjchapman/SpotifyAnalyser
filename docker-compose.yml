@@ -1,4 +1,13 @@
-version: '3.8'
+x-backend-common: &backend-common
+  build:
+    context: ./backend
+    dockerfile: Dockerfile.dev
+  volumes:
+    - ./backend:/backend
+  depends_on:
+    - db
+  env_file:
+    - ./backend/.local.env
 
 services:
   db:
@@ -12,18 +21,15 @@ services:
       - ./backend/.local.env
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
+    <<: *backend-common
     command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./backend:/backend
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-    env_file:
-      - ./backend/.local.env
+
+  backend_cmd:
+    <<: *backend-common
+    command: sh -c "tail -f /dev/null"  # Keep the container running
+    ports: [ ]  # Remove port binding to avoid conflicts
 
 volumes:
   postgres_data:
