@@ -1,0 +1,9 @@
+-r requirements.txt  # Include all production dependencies
+
+## Pre-commit hooks
+# https://pypi.org/project/pre-commit/
+pre-commit==3.7.1
+
+## Linter
+# https://pypi.org/project/ruff/
+ruff==0.5.5
