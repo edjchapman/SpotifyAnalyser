@@ -1,11 +1,28 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Profile{% endblock %}
 
 {% block content %}
     <div class="container mt-5">
         <h2>Welcome, {{ user.username }}!</h2>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Spotify ID:</strong> {{ user.spotify_id }}</p>
+        <p>Your email: {{ user.email }}</p>
+        <p>Your Spotify ID: {{ user.spotify_id }}</p>
+
+        {% if spotify_connected %}
+            <h3>Spotify Account Connected</h3>
+            <p>Access Token: {{ spotify_token.access_token }}</p>
+            <p>Refresh Token: {{ spotify_token.refresh_token }}</p>
+            <p>Token Expires At: {{ spotify_token.expires_at }}</p>
+            <p>
+                <a href="{% url 'spotify-login' %}" class="btn btn-warning">Refresh Spotify Connection</a>
+                <a href="{% url 'spotify-disconnect' %}" class="btn btn-danger">Disconnect from Spotify</a>
+            </p>
+        {% else %}
+            <h3>Spotify Account Not Connected</h3>
+            <p>
+                <a href="{% url 'spotify-login' %}" class="btn btn-primary">Connect to Spotify</a>
+            </p>
+        {% endif %}
     </div>
 {% endblock %}

@@ -12,9 +12,3 @@ class CustomUserAdmin(UserAdmin):
 
     model = User
     list_display = ["username", "email", "first_name", "last_name", "is_staff", "spotify_id"]
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {"fields": ("spotify_id", "access_token", "refresh_token", "token_expiry")}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {"fields": ("spotify_id", "access_token", "refresh_token", "token_expiry")}),
-    )

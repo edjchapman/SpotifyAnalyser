@@ -12,7 +12,4 @@ class CustomUserCreationForm(UserCreationForm):
             "password1",
             "password2",
             "spotify_id",
-            "access_token",
-            "refresh_token",
-            "token_expiry",
         )

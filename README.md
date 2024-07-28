@@ -11,38 +11,43 @@ It includes configurations for both development and production environments usin
 ```
 SpotifyAnalyser/
 ├── backend/
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── wsgi.py
-│   ├── accounts/
-│   │   ├── __init__.py
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── forms.py
-│   │   ├── models.py
-│   │   ├── tests.py
-│   │   ├── views.py
-│   │   ├── urls.py
-│   │   ├── templates/
-│   │   │   ├── accounts/
-│   │   │   │   ├── register.html
-│   │   │   │   ├── login.html
-│   │   │   │   ├── profile.html
-│   ├── static/
-│   │   ├── css/
-│   │   │   ├── styles.css
-│   ├── templates/
-│   │   ├── base.html
-│   ├── manage.py
-│   ├── requirements.txt
-│   ├── Dockerfile.dev
-│   ├── Dockerfile.prod
-│   ├── init-db.sh
-│   ├── .local.env
-│   ├── .env.prod
-│   ├── .pre-commit-config.yaml
+│ ├── core/
+│ │ ├── __init__.py
+│ │ ├── settings.py
+│ │ ├── urls.py
+│ │ ├── wsgi.py
+│ ├── accounts/
+│ │ ├── __init__.py
+│ │ ├── admin.py
+│ │ ├── apps.py
+│ │ ├── forms.py
+│ │ ├── models.py
+│ │ ├── tests.py
+│ │ ├── views.py
+│ │ ├── urls.py
+│ │ ├── templates/
+│ │ │ ├── accounts/
+│ │ │ │ ├── register.html
+│ │ │ │ ├── login.html
+│ │ │ │ ├── profile.html
+│ ├── spotify/
+│ │ ├── __init__.py
+│ │ ├── models.py
+│ │ ├── views.py
+│ │ ├── urls.py
+│ ├── templates/
+│ │ ├── base.html
+│ ├── static/
+│ │ ├── css/
+│ │ │ ├── styles.css
+│ ├── manage.py
+│ ├── requirements.txt
+│ ├── Dockerfile.dev
+│ ├── Dockerfile.prod
+│ ├── init-db.sh
+│ ├── .local.env
+│ ├── .env # This file is not committed to git
+│ ├── .pre-commit-config.yaml
 ├── docker-compose.yml
 ├── docker-compose.prod.yml
 └── README.md
@@ -55,8 +60,8 @@ SpotifyAnalyser/
 - Docker
 - Docker Compose
 - Python (for setting up pre-commit hooks)
-
----
+- Spotify API credentials (Client ID and Client Secret)
+  from [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
 
 ## Development Setup
 
@@ -67,30 +72,14 @@ SpotifyAnalyser/
 - **Environment Variables**: `backend/.local.env`
 - **Pre-commit Hooks**: `backend/.pre-commit-config.yaml`
 
-### Environment Variables
+### Setting Up Environment Variables
 
-Create a `.local.env` file in the `backend` directory with the following content:
+Create a `backend/.env` file in the `backend` directory by copying from `backend/.local.env`
+and populating it with your actual API keys and secrets:
 
-```env
-# DATABASE
-POSTGRES_DB=spotify_analyser_db_name
-POSTGRES_USER=spotify_analyser_db_user
-POSTGRES_PASSWORD=password
-POSTGRES_DB_HOST=db
-POSTGRES_DB_PORT=5432
-
-# DJANGO
-DEBUG=True
-SECRET_KEY=dev_secret_key
-ALLOWED_HOSTS=*
-LANGUAGE_CODE="en-GB"
-
-# EMAIL
-EMAIL_HOST="localhost"
-EMAIL_PORT=25
-EMAIL_HOST_PASSWORD=""
-EMAIL_HOST_USER=""
-EMAIL_USE_TLS=False
+```sh
+cp backend/.local.env backend/.env
+# Then edit backend/.env to add your real values
 ```
 
 ### Pre-commit Hooks Setup
@@ -128,11 +117,11 @@ docker-compose up
 
 - **Docker Compose**: `docker-compose.prod.yml`
 - **Dockerfile**: `backend/Dockerfile.prod`
-- **Environment Variables**: `backend/.env.prod`
+- **Environment Variables**: `backend/.env`
 
-### Environment Variables
+### Setting Up Environment Variables
 
-Create a `.env.prod` file in the `backend` directory with the following content:
+Create a `backend/.env` file in the `backend` directory with the following content:
 
 ```env
 # DATABASE
@@ -154,6 +143,11 @@ EMAIL_PORT=25
 EMAIL_HOST_PASSWORD=""
 EMAIL_HOST_USER=""
 EMAIL_USE_TLS=False
+
+# SPOTIFY
+SPOTIPY_CLIENT_ID=your_spotify_client_id
+SPOTIPY_CLIENT_SECRET=your_spotify_client_secret
+SPOTIPY_REDIRECT_URI=https://your-production-url.com/spotify/callback/
 ```
 
 ### Running the Production Environment

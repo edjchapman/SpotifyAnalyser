@@ -21,5 +21,6 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),  # This includes the default auth URLs
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("spotify/", include("spotify.urls")),
 ]

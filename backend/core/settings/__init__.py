@@ -12,6 +12,7 @@ from .email import *
 from .internationalization import *
 from .middleware import *
 from .secret_key import *
+from .spotify import *
 from .static_media import *
 from .templates import *
 from .urls import *

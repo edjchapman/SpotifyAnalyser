@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
 
 from accounts.forms import CustomUserCreationForm
+from spotify.models import SpotifyToken
 
 
 class RegisterView(CreateView):
@@ -50,3 +51,13 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     """
 
     template_name = "accounts/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            spotify_token = SpotifyToken.objects.get(user=self.request.user)
+            context["spotify_connected"] = True
+            context["spotify_token"] = spotify_token
+        except SpotifyToken.DoesNotExist:
+            context["spotify_connected"] = False
+        return context
