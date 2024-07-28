@@ -7,6 +7,6 @@ DJANGO_BUILTIN_APPS = [
     "django.contrib.staticfiles",
 ]
 
-CUSTOM_APPS = ["users"]
+CUSTOM_APPS = ["accounts"]
 
 INSTALLED_APPS = DJANGO_BUILTIN_APPS + CUSTOM_APPS

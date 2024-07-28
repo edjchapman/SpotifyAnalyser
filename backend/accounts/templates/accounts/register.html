@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load bootstrap_filters %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Register</h2>
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.non_field_errors }}
+            </div>
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                {{ form.username|as_bootstrap }}
+            </div>
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">Password</label>
+                {{ form.password1|as_bootstrap }}
+            </div>
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirm Password</label>
+                {{ form.password2|as_bootstrap }}
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+{% endblock %}

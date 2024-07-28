@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Spotify ID:</strong> {{ user.spotify_id }}</p>
+    </div>
+{% endblock %}
