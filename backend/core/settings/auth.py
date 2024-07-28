@@ -16,5 +16,4 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "users.User"
-LOGIN_REDIRECT_URL = "/users/profile/"
+AUTH_USER_MODEL = "accounts.User"

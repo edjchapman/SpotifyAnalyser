@@ -4,6 +4,8 @@ This project is a Django-based application for analyzing Spotify data.
 
 It includes configurations for both development and production environments using Docker.
 
+---
+
 ## Project Structure
 
 ```
@@ -14,7 +16,7 @@ SpotifyAnalyser/
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   ├── wsgi.py
-│   ├── users/
+│   ├── accounts/
 │   │   ├── __init__.py
 │   │   ├── admin.py
 │   │   ├── apps.py
@@ -22,8 +24,9 @@ SpotifyAnalyser/
 │   │   ├── models.py
 │   │   ├── tests.py
 │   │   ├── views.py
+│   │   ├── urls.py
 │   ├── templates/
-│   │   ├── users/
+│   │   ├── accounts/
 │   │   │   ├── register.html
 │   │   │   ├── login.html
 │   │   │   ├── profile.html
@@ -40,11 +43,15 @@ SpotifyAnalyser/
 └── README.md
 ```
 
+---
+
 ## Prerequisites
 
 - Docker
 - Docker Compose
 - Python (for setting up pre-commit hooks)
+
+---
 
 ## Development Setup
 
@@ -116,11 +123,11 @@ docker-compose up
 
 - **Docker Compose**: `docker-compose.prod.yml`
 - **Dockerfile**: `backend/Dockerfile.prod`
-- **Environment Variables**: `backend/.prod.env`
+- **Environment Variables**: `backend/.env.prod`
 
 ### Environment Variables
 
-Create a `.prod.env` file in the `backend` directory with the following content:
+Create a `.env.prod` file in the `backend` directory with the following content:
 
 ```env
 # DATABASE
@@ -185,25 +192,27 @@ docker-compose -f docker-compose.prod.yml up -d
   docker-compose logs
   ```
 
+---
+
 ## User Management
 
 ### Registration
 
 Users can register via the registration form:
 
-- URL: `/users/register/`
-- Template: `users/register.html`
+- URL: `/accounts/register/`
+- Template: `accounts/register.html`
 
 ### Login
 
 Users can log in via the login form:
 
-- URL: `/users/login/`
-- Template: `users/login.html`
+- URL: `/accounts/login/`
+- Template: `accounts/login.html`
 
 ### Profile
 
 Logged-in users can view their profile:
 
-- URL: `/users/profile/`
-- Template: `users/profile.html`
+- URL: `/accounts/profile/`
+- Template: `accounts/profile.html`
