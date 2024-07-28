@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
 
-from .forms import CustomUserCreationForm
+from users.forms import CustomUserCreationForm
 
 
 class RegisterView(CreateView):
@@ -30,6 +30,7 @@ class LoginView(FormView):
     form_class = AuthenticationForm
     template_name = "registration/login.html"
     success_url = reverse_lazy("profile")
+    redirect_authenticated_user = True
 
     def form_valid(self, form):
         username = form.cleaned_data.get("username")
@@ -37,7 +38,10 @@ class LoginView(FormView):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(self.request, user)
-        return super().form_valid(form)
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "Invalid username or password")
+            return self.form_invalid(form)
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
