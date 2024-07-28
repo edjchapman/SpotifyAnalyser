@@ -25,11 +25,16 @@ SpotifyAnalyser/
 │   │   ├── tests.py
 │   │   ├── views.py
 │   │   ├── urls.py
+│   │   ├── templates/
+│   │   │   ├── accounts/
+│   │   │   │   ├── register.html
+│   │   │   │   ├── login.html
+│   │   │   │   ├── profile.html
+│   ├── static/
+│   │   ├── css/
+│   │   │   ├── styles.css
 │   ├── templates/
-│   │   ├── accounts/
-│   │   │   ├── register.html
-│   │   │   ├── login.html
-│   │   │   ├── profile.html
+│   │   ├── base.html
 │   ├── manage.py
 │   ├── requirements.txt
 │   ├── Dockerfile.dev
