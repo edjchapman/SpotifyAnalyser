@@ -1,12 +1,25 @@
 {% extends "base.html" %}
+{% load bootstrap_filters %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+    <div class="container mt-5">
+        <h2>Login</h2>
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.non_field_errors }}
+            </div>
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                {{ form.username|as_bootstrap }}
+            </div>
+            <div class="mb-3">
+                <label for="id_password" class="form-label">Password</label>
+                {{ form.password|as_bootstrap }}
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
 {% endblock %}

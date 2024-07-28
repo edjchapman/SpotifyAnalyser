@@ -3,7 +3,9 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-    <h2>Welcome, {{ user.username }}!</h2>
-    <p>Your email: {{ user.email }}</p>
-    <p>Your Spotify ID: {{ user.spotify_id }}</p>
+    <div class="container mt-5">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Spotify ID:</strong> {{ user.spotify_id }}</p>
+    </div>
 {% endblock %}
