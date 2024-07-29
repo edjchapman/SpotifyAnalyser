@@ -9,8 +9,7 @@ local_settings.py
 backend/db.sqlite3
 db.sqlite3-journal
 media/
-staticfiles/
-!backend/staticfiles/.gitkeep
+staticfiles
 
 ### Python
 # Byte-compiled / optimized / DLL files

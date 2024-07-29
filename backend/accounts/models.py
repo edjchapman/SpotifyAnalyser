@@ -11,9 +11,6 @@ class User(AbstractUser, BaseModel):
     """
 
     spotify_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    access_token = models.CharField(max_length=255, null=True, blank=True)
-    refresh_token = models.CharField(max_length=255, null=True, blank=True)
-    token_expiry = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = "User"
