@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 
-from spotify.models import SpotifyToken
+from spotify.models import SpotifyToken, Playlist
 from spotify.services import SpotifyService
 
 
@@ -42,9 +42,9 @@ def spotify_callback(request):
     code = request.GET.get("code")
     token_info = sp_oauth.get_access_token(code)
 
-    if token_info and "access_token" in token_info and "refresh_token" in token_info and "expires_in" in token_info:
+    if token_info and "access_token" in token_info and "refresh_token" in token_info and "expires_at" in token_info:
         user = request.user
-        expires_at = timezone.now() + timedelta(seconds=token_info["expires_in"])
+        expires_at = timezone.now() + timedelta(seconds=token_info["expires_at"])
 
         spotify_token, created = SpotifyToken.objects.get_or_create(user=user)
         spotify_token.access_token = token_info["access_token"]
@@ -75,11 +75,16 @@ def spotify_disconnect(request):
 
 @method_decorator(login_required, name="dispatch")
 class BackupPlaylistsView(View):
-    """
-    Backups all the user’s playlists to their Spotify account.
-    """
-
     def get(self, request, *args, **kwargs):
         spotify_service = SpotifyService(request.user)
         spotify_service.backup_playlists()
-        return redirect("profile")
+        return redirect("spotify-playlists")
+
+
+@method_decorator(login_required, name="dispatch")
+class PlaylistView(View):
+    template_name = "spotify/playlists.html"
+
+    def get(self, request, *args, **kwargs):
+        playlists = Playlist.objects.filter(user=request.user)
+        return render(request, self.template_name, {"playlists": playlists})

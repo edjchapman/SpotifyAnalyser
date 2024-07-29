@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Your Playlists{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Your Spotify Playlists</h2>
+        {% if playlists %}
+            <ul class="list-group">
+                {% for playlist in playlists %}
+                    <li class="list-group-item">
+                        <h5>{{ playlist.name }}</h5>
+                        <p>{{ playlist.description }}</p>
+                        <p>Public: {{ playlist.public }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have no playlists backed up.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,11 +1,15 @@
-from django.contrib.auth import login, authenticate
+import logging
+
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView, RedirectView
 
 from accounts.forms import CustomUserCreationForm
 from spotify.models import SpotifyToken
+
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(CreateView):
@@ -61,3 +65,16 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         except SpotifyToken.DoesNotExist:
             context["spotify_connected"] = False
         return context
+
+
+class CustomLogoutView(RedirectView):
+    """
+    Custom logout view
+    """
+
+    template_name = "accounts/logout.html"
+    url = reverse_lazy("login")
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super().get(request, *args, **kwargs)
