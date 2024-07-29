@@ -11,45 +11,47 @@ It includes configurations for both development and production environments usin
 ```
 SpotifyAnalyser/
 ├── backend/
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── wsgi.py
-│   ├── accounts/
-│   │   ├── __init__.py
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── forms.py
-│   │   ├── models.py
-│   │   ├── tests.py
-│   │   ├── views.py
-│   │   ├── urls.py
-│   │   ├── templates/
-│   │   │   ├── accounts/
-│   │   │   │   ├── register.html
-│   │   │   │   ├── login.html
-│   │   │   │   ├── profile.html
-│   ├── spotify/
-│   │   ├── __init__.py
-│   │   ├── models.py
-│   │   ├── tests.py
-│   │   ├── views.py
-│   │   ├── urls.py
-│   ├── templates/
-│   │   ├── base.html
-│   ├── static/
-│   │   ├── css/
-│   │   │   ├── styles.css
-│   ├── manage.py
-│   ├── requirements.txt
-│   ├── Dockerfile.dev
-│   ├── Dockerfile.prod
-│   ├── init-db.sh
-│   ├── .local.env
-│   ├── .prod.env
-│   ├── .env  # This file is not committed to git
-│   ├── .pre-commit-config.yaml
+│ ├── core/
+│ │ ├── __init__.py
+│ │ ├── settings.py
+│ │ ├── urls.py
+│ │ ├── wsgi.py
+│ ├── accounts/
+│ │ ├── __init__.py
+│ │ ├── admin.py
+│ │ ├── apps.py
+│ │ ├── forms.py
+│ │ ├── models.py
+│ │ ├── tests.py
+│ │ ├── views.py
+│ │ ├── urls.py
+│ │ ├── templates/
+│ │ │ ├── accounts/
+│ │ │ │ ├── register.html
+│ │ │ │ ├── login.html
+│ │ │ │ ├── profile.html
+│ ├── spotify/
+│ │ ├── __init__.py
+│ │ ├── admin.py
+│ │ ├── models.py
+│ │ ├── views.py
+│ │ ├── urls.py
+│ │ ├── services.py
+│ │ ├── tests.py
+│ ├── templates/
+│ │ ├── base.html
+│ ├── static/
+│ │ ├── css/
+│ │ │ ├── styles.css
+│ ├── manage.py
+│ ├── requirements.txt
+│ ├── Dockerfile.dev
+│ ├── Dockerfile.prod
+│ ├── init-db.sh
+│ ├── .local.env
+│ ├── .prod.env
+│ ├── .env # This file is not committed to git
+│ ├── .pre-commit-config.yaml
 ├── docker-compose.yml
 ├── docker-compose.prod.yml
 └── README.md
@@ -222,20 +224,20 @@ Logged-in users can view their profile:
 
 ## Running Tests
 
-### Spotify Integration
+### Test Files
 
-Unit tests for the Spotify integration are located in `backend/spotify/tests.py`.
+- `backend/accounts/tests.py`
+- `backend/spotify/tests.py`
 
-### Running All Tests
+### Running Tests
 
-To run all tests:
+To run tests, use the following command:
 
 ```sh
 docker-compose exec backend python manage.py test
 ```
 
-To run tests for a specific app:
+---
 
-```sh
-docker-compose exec backend python manage.py test spotify
-```
+Make sure to replace the placeholder values in the `.env` file with your actual Spotify API credentials
+and other configuration details.
