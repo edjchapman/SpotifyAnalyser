@@ -1,17 +1,14 @@
-from datetime import timedelta
-
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.utils import timezone
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone as tz
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from spotipy import Spotify
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy import SpotifyOAuth, Spotify
 
-from spotify.models import SpotifyToken, Playlist
+from spotify.models import SpotifyToken, Playlist, Track
 from spotify.services import SpotifyService
 
 
@@ -44,7 +41,7 @@ def spotify_callback(request):
 
     if token_info and "access_token" in token_info and "refresh_token" in token_info and "expires_at" in token_info:
         user = request.user
-        expires_at = timezone.now() + timedelta(seconds=token_info["expires_at"])
+        expires_at = tz.now() + tz.timedelta(seconds=token_info["expires_at"])
 
         spotify_token, created = SpotifyToken.objects.get_or_create(user=user)
         spotify_token.access_token = token_info["access_token"]
@@ -88,3 +85,13 @@ class PlaylistView(View):
     def get(self, request, *args, **kwargs):
         playlists = Playlist.objects.filter(user=request.user)
         return render(request, self.template_name, {"playlists": playlists})
+
+
+@method_decorator(login_required, name="dispatch")
+class PlaylistDetailView(View):
+    template_name = "spotify/playlist_detail.html"
+
+    def get(self, request, pk, *args, **kwargs):
+        playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
+        tracks = Track.objects.filter(playlist=playlist)
+        return render(request, self.template_name, {"playlist": playlist, "tracks": tracks})

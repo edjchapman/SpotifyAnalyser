@@ -9,7 +9,7 @@
             <ul class="list-group">
                 {% for playlist in playlists %}
                     <li class="list-group-item">
-                        <h5>{{ playlist.name }}</h5>
+                        <h5><a href="{% url 'spotify-playlist-detail' playlist.pk %}">{{ playlist.name }}</a></h5>
                         <p>{{ playlist.description }}</p>
                         <p>Public: {{ playlist.public }}</p>
                     </li>

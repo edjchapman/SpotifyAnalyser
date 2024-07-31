@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ playlist.name }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>{{ playlist.name }}</h2>
+        <p>{{ playlist.description }}</p>
+        <p>Public: {{ playlist.public }}</p>
+        <h3>Songs</h3>
+        {% if tracks %}
+            <ul class="list-group">
+                {% for track in tracks %}
+                    <li class="list-group-item">
+                        <h5>{{ track.name }}</h5>
+                        <p>Artist: {{ track.artist }}</p>
+                        <p>Album: {{ track.album }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No songs found in this playlist.</p>
+        {% endif %}
+    </div>
+{% endblock %}
