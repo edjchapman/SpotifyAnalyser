@@ -3,9 +3,9 @@ import logging
 import spotipy
 from django.conf import settings
 from django.utils import timezone as tz
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy import SpotifyOAuth
 
-from spotify.models import Playlist, Track
+from spotify.models import Track, Playlist
 
 logger = logging.getLogger(__name__)
 
@@ -41,32 +41,47 @@ class SpotifyService:
 
     def backup_playlists(self):
         results = self.sp.current_user_playlists()
-        for item in results["items"]:
-            playlist, created = Playlist.objects.update_or_create(
-                spotify_id=item["id"],
-                user=self.user,
-                defaults={
-                    "name": item["name"],
-                    "description": item.get("description", ""),
-                    "public": item["public"],
-                },
-            )
-            if created:
-                self.fetch_and_store_tracks(playlist)
-
-    def fetch_and_store_tracks(self, playlist):
-        results = self.sp.playlist_items(playlist.spotify_id)
-        for item in results["items"]:
-            try:
-                track = item["track"]
-                Track.objects.update_or_create(
-                    playlist=playlist,
-                    spotify_id=track["id"],
+        while results:
+            for item in results["items"]:
+                playlist, created = Playlist.objects.update_or_create(
+                    spotify_id=item["id"],
+                    user=self.user,
                     defaults={
-                        "name": track["name"],
-                        "artist": ", ".join([artist["name"] for artist in track["artists"]]),
-                        "album": track["album"]["name"],
+                        "name": item["name"],
+                        "description": item.get("description", ""),
+                        "public": item["public"],
                     },
                 )
-            except Exception as e:
-                logger.exception(f"Error fetching track: {e}")
+                self.fetch_and_store_tracks(playlist)
+            results = self.sp.next(results)
+
+    def fetch_and_store_tracks(self, playlist):
+        existing_track_ids = set(playlist.track_set.values_list("spotify_id", flat=True))
+        new_track_ids = set()
+
+        results = self.sp.playlist_items(playlist.spotify_id)
+        while results:
+            for item in results["items"]:
+                try:
+                    track = item.get("track")
+                    if track and track.get("id"):
+                        new_track, created = Track.objects.update_or_create(
+                            playlist=playlist,
+                            spotify_id=track["id"],
+                            defaults={
+                                "name": track["name"],
+                                "artist": ", ".join([artist["name"] for artist in track["artists"]]),
+                                "album": track["album"]["name"],
+                            },
+                        )
+                        new_track_ids.add(new_track.spotify_id)
+                    else:
+                        logger.warning(f"Skipping item with no valid track ID in playlist {playlist.name}")
+                except Exception as e:
+                    logger.exception(f"Error fetching track: {e}")
+            results = self.sp.next(results)
+
+        # Remove tracks that are no longer in the playlist
+        to_delete = existing_track_ids - new_track_ids
+        if to_delete:
+            Track.objects.filter(playlist=playlist, spotify_id__in=to_delete).delete()
