@@ -7,6 +7,7 @@ from spotify.views import (
     BackupPlaylistsView,
     PlaylistView,
     PlaylistDetailView,
+    RefreshPlaylistView,
 )
 
 urlpatterns = [
@@ -20,4 +21,9 @@ urlpatterns = [
         name="spotify-playlist-detail",
     ),
     path("backup/", BackupPlaylistsView.as_view(), name="spotify-backup"),
+    path(
+        "playlists/<uuid:pk>/refresh/",
+        RefreshPlaylistView.as_view(),
+        name="spotify-playlist-refresh",
+    ),  # New URL for refreshing a specific playlist
 ]

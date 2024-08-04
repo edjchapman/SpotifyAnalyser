@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils import timezone as tz
 from django.views import View
 from spotipy import SpotifyOAuth, Spotify
@@ -106,6 +107,14 @@ class BackupPlaylistsView(LoginRequiredMixin, View):
         spotify_service = SpotifyService(request.user)
         spotify_service.backup_playlists()
         return redirect("spotify-playlists")
+
+
+class RefreshPlaylistView(LoginRequiredMixin, View):
+    # noinspection PyMethodMayBeStatic
+    def get(self, request, pk, *args, **kwargs):
+        spotify_service = SpotifyService(request.user)
+        spotify_service.refresh_playlist(pk)  # Use the primary key directly
+        return redirect(reverse("spotify-playlist-detail", args=[pk]))
 
 
 class PlaylistView(LoginRequiredMixin, View):

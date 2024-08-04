@@ -3,9 +3,9 @@ import logging
 import spotipy
 from django.conf import settings
 from django.utils import timezone as tz
-from spotipy import SpotifyOAuth
+from spotipy.oauth2 import SpotifyOAuth
 
-from spotify.models import Track, Playlist
+from spotify.models import Playlist, Track
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +40,7 @@ class SpotifyService:
         spotify_token.save()
 
     def backup_playlists(self):
+        """Backup all playlists for the user."""
         results = self.sp.current_user_playlists()
         while results:
             for item in results["items"]:
@@ -52,10 +53,25 @@ class SpotifyService:
                         "public": item["public"],
                     },
                 )
-                self.fetch_and_store_tracks(playlist)
-            results = self.sp.next(results)
+                self._update_tracks_for_playlist(playlist)
 
-    def fetch_and_store_tracks(self, playlist):
+            # Check if there’s a next page of results
+            if results.get("next"):
+                results = self.sp.next(results)
+            else:
+                break
+
+    def refresh_playlist(self, playlist_id):
+        """Refresh the tracks of a specific playlist."""
+        try:
+            playlist = Playlist.objects.get(spotify_id=playlist_id, user=self.user)
+            self._update_tracks_for_playlist(playlist)
+        except Playlist.DoesNotExist:
+            logger.error(f"Playlist with ID {playlist_id} does not exist for the user.")
+            return
+
+    def _update_tracks_for_playlist(self, playlist):
+        """Fetch and update tracks for a given playlist."""
         existing_track_ids = set(playlist.track_set.values_list("spotify_id", flat=True))
         new_track_ids = set()
 
@@ -63,20 +79,17 @@ class SpotifyService:
         while results:
             for item in results["items"]:
                 try:
-                    track = item.get("track")
-                    if track and track.get("id"):
-                        new_track, created = Track.objects.update_or_create(
-                            playlist=playlist,
-                            spotify_id=track["id"],
-                            defaults={
-                                "name": track["name"],
-                                "artist": ", ".join([artist["name"] for artist in track["artists"]]),
-                                "album": track["album"]["name"],
-                            },
-                        )
-                        new_track_ids.add(new_track.spotify_id)
-                    else:
-                        logger.warning(f"Skipping item with no valid track ID in playlist {playlist.name}")
+                    track = item["track"]
+                    new_track, created = Track.objects.update_or_create(
+                        playlist=playlist,
+                        spotify_id=track["id"],
+                        defaults={
+                            "name": track["name"],
+                            "artist": ", ".join([artist["name"] for artist in track["artists"]]),
+                            "album": track["album"]["name"],
+                        },
+                    )
+                    new_track_ids.add(new_track.spotify_id)
                 except Exception as e:
                     logger.exception(f"Error fetching track: {e}")
             results = self.sp.next(results)
