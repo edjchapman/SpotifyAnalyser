@@ -38,15 +38,20 @@ class LoginView(FormView):
     redirect_authenticated_user = True
 
     def form_valid(self, form):
-        username = form.cleaned_data.get("username")
-        password = form.cleaned_data.get("password")
-        user = authenticate(username=username, password=password)
-        if user is not None:
+        user = self._authenticate_user(form.cleaned_data)
+        if user:
             login(self.request, user)
             return super().form_valid(form)
         else:
             form.add_error(None, "Invalid username or password")
             return self.form_invalid(form)
+
+    @staticmethod
+    def _authenticate_user(cleaned_data):
+        """Helper function to authenticate user."""
+        username = cleaned_data.get("username")
+        password = cleaned_data.get("password")
+        return authenticate(username=username, password=password)
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
@@ -58,6 +63,12 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context.update(self._get_spotify_context())
+        return context
+
+    def _get_spotify_context(self):
+        """Helper function to get Spotify connection status."""
+        context = {}
         try:
             spotify_token = SpotifyToken.objects.get(user=self.request.user)
             context["spotify_connected"] = True

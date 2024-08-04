@@ -34,11 +34,14 @@ class SpotifyTests(TestCase):
         mock_get_access_token.return_value = {
             "access_token": "mock_access_token",
             "refresh_token": "mock_refresh_token",
-            "expires_in": 3600,
+            "expires_in": 3600,  # Time in seconds until the token expires
         }
 
         # Mocking the current user response from Spotify
-        mock_current_user.return_value = {"id": "mock_spotify_user_id", "display_name": "Mock Spotify User"}
+        mock_current_user.return_value = {
+            "id": "mock_spotify_user_id",
+            "display_name": "Mock Spotify User",
+        }
 
         response = self.client.get(reverse("spotify-callback"), {"code": "testcode"})
         self.assertEqual(response.status_code, 302)  # Should redirect to profile page
@@ -46,6 +49,7 @@ class SpotifyTests(TestCase):
         spotify_token = SpotifyToken.objects.get(user=self.test_user)
         self.assertEqual(spotify_token.access_token, "mock_access_token")
         self.assertEqual(spotify_token.refresh_token, "mock_refresh_token")
+        self.assertTrue(spotify_token.expires_at > tz.now())  # Ensure expiration is set correctly
 
     def test_spotify_disconnect_view(self):
         # Ensure any existing token is deleted
@@ -67,7 +71,14 @@ class SpotifyTests(TestCase):
     @patch("spotify.services.SpotifyService.fetch_and_store_tracks")
     def test_backup_playlists(self, mock_fetch_and_store_tracks, mock_current_user_playlists):
         mock_current_user_playlists.return_value = {
-            "items": [{"id": "playlist1", "name": "Playlist 1", "description": "Description 1", "public": True}]
+            "items": [
+                {
+                    "id": "playlist1",
+                    "name": "Playlist 1",
+                    "description": "Description 1",
+                    "public": True,
+                }
+            ]
         }
         service = SpotifyService(self.test_user)
         service.backup_playlists()
