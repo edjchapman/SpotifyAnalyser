@@ -27,9 +27,10 @@ class SpotifyTests(TestCase):
         response = self.client.get(reverse("spotify-login"))
         self.assertEqual(response.status_code, 302)  # Redirect to Spotify auth
 
+    @patch("spotify.services.SpotifyService._update_tracks_for_playlist")
     @patch("spotipy.oauth2.SpotifyOAuth.get_access_token")
     @patch("spotipy.client.Spotify.current_user")
-    def test_spotify_callback_view(self, mock_current_user, mock_get_access_token):
+    def test_spotify_callback_view(self, mock_current_user, mock_get_access_token, mock_update_tracks):
         # Mocking the access token response from Spotify
         mock_get_access_token.return_value = {
             "access_token": "mock_access_token",
@@ -38,7 +39,10 @@ class SpotifyTests(TestCase):
         }
 
         # Mocking the current user response from Spotify
-        mock_current_user.return_value = {"id": "mock_spotify_user_id", "display_name": "Mock Spotify User"}
+        mock_current_user.return_value = {
+            "id": "mock_spotify_user_id",
+            "display_name": "Mock Spotify User",
+        }
 
         response = self.client.get(reverse("spotify-callback"), {"code": "testcode"})
         self.assertEqual(response.status_code, 302)  # Should redirect to profile page
@@ -63,11 +67,18 @@ class SpotifyTests(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect after disconnect
         self.assertFalse(SpotifyToken.objects.filter(user=self.test_user).exists())
 
+    @patch("spotify.services.SpotifyService._update_tracks_for_playlist")
     @patch("spotipy.client.Spotify.current_user_playlists")
-    @patch("spotify.services.SpotifyService.fetch_and_store_tracks")
-    def test_backup_playlists(self, mock_fetch_and_store_tracks, mock_current_user_playlists):
+    def test_backup_playlists(self, mock_current_user_playlists, mock_update_tracks):
         mock_current_user_playlists.return_value = {
-            "items": [{"id": "playlist1", "name": "Playlist 1", "description": "Description 1", "public": True}]
+            "items": [
+                {
+                    "id": "playlist1",
+                    "name": "Playlist 1",
+                    "description": "Description 1",
+                    "public": True,
+                }
+            ]
         }
         service = SpotifyService(self.test_user)
         service.backup_playlists()
@@ -78,4 +89,4 @@ class SpotifyTests(TestCase):
         self.assertEqual(playlists[0].name, "Playlist 1")
         self.assertEqual(playlists[0].description, "Description 1")
         self.assertTrue(playlists[0].public)
-        mock_fetch_and_store_tracks.assert_called_once_with(playlists[0])
+        mock_update_tracks.assert_called_once_with(playlists[0])
