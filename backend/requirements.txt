@@ -2,6 +2,19 @@
 # https://pypi.org/project/Django/
 Django==5.0.6
 
+# Django app for Celery Beat Scheduler
+# Stores the schedule in the DB and displays it in the admin
+# https://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html#using-custom-scheduler-classes
+django-celery-beat==2.6.0
+
+## Extension that provides result backends using either the Django ORM, or the Django Cache framework.
+# https://pypi.org/project/django-celery-results/
+#
+django-celery-results
+
+# Periodic and Asynchronous Tasks
+celery[redis]==5.4.0
+
 ## WSGI HTTP Server
 # https://pypi.org/project/gunicorn/
 gunicorn==22.0.0

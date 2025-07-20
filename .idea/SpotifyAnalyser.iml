@@ -19,7 +19,7 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/backend/staticfiles" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.12.4 Docker Compose (SpotifyAnalyser Backend)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.12.4 Docker Compose (backend_cmd)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bootstrap" level="application" />
   </component>
@@ -29,6 +29,7 @@
       <list>
         <option value="$MODULE_DIR$/backend/templates" />
         <option value="$MODULE_DIR$/backend/accounts/templates" />
+        <option value="$MODULE_DIR$/backend/spotify/templates" />
       </list>
     </option>
   </component>

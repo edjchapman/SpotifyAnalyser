@@ -32,6 +32,26 @@ services:
     command: sh -c "tail -f /dev/null"  # Keep the container running
     ports: [ ]
 
+  # REDIS
+  redis:
+    image: redis
+    restart: always
+
+  # CELERY WORKER
+  celery_worker:
+    <<: *backend-common
+    command: celery -A spotifyanalyser worker --loglevel=INFO
+    depends_on:
+      - redis
+
+  # CELERY BEAT
+  celery_beat:
+    <<: *backend-common
+    command: celery -A spotifyanalyser beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    depends_on:
+      - redis
+      - db
+
 volumes:
   postgres_data:
   staticfiles:

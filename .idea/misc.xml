@@ -7,5 +7,5 @@
     <option name="pathToExecutable" value="/opt/homebrew/bin/black" />
     <option name="sdkName" value="Remote Python 3.12.4 Docker Compose (SpotifyAnalyser Backend)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.12.4 Docker Compose (SpotifyAnalyser Backend)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.12.4 Docker Compose (backend_cmd)" project-jdk-type="Python SDK" />
 </project>

@@ -7,6 +7,6 @@ DJANGO_BUILTIN_APPS = [
     "django.contrib.staticfiles",
 ]
 
-CUSTOM_APPS = ["accounts", "spotify"]
+CUSTOM_APPS = ["accounts", "spotify", "django_celery_results"]
 
 INSTALLED_APPS = DJANGO_BUILTIN_APPS + CUSTOM_APPS
